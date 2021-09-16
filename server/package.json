@@ -1,0 +1,31 @@
+{
+  "name": "todomvc",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "start": "nodemon src/app.js --exec  \"npm run lint && node\"",
+    "lint": "eslint src/**/*.js"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/MathieuW-sopra/TodoMVC.git"
+  },
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/MathieuW-sopra/TodoMVC/issues"
+  },
+  "homepage": "https://github.com/MathieuW-sopra/TodoMVC#readme",
+  "dependencies": {
+    "chalk": "^4.1.2",
+    "debug": "^4.3.2",
+    "express": "^4.17.1",
+    "morgan": "^1.10.0",
+    "nodemon": "^2.0.12"
+  },
+  "devDependencies": {
+    "eslint": "^7.32.0",
+    "eslint-plugin-vue": "^7.17.0"
+  }
+}
