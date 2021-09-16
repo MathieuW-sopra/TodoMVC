@@ -21,6 +21,12 @@ app.get('/',(req, res)=>{
     });
 })
 
+app.post('/addTask',(req, res)=>{
+    res.send({
+        message : "your task "+ req.body.title +" was added"
+    });
+})
+
 app.listen(port,()=>{
     console.log(`listening on port ${chalk.green(port)}`);
     debug(`listening on port ${chalk.green(port)}`);
