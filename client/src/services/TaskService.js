@@ -1,7 +1,17 @@
 import Api from '@/services/Api'
 
 export default {
-  addTask (task) {
-    return Api().post('addedTask', task)
+  get () {
+    return Api().get('task/get')
+  },
+  add (task) {
+    return Api().post('task/add', task)
+  },
+  replace (task) {
+    return Api().put('task/replace', task)
+  },
+  remove (task) {
+    return Api().delete('task/remove', task.id)
   }
+
 }

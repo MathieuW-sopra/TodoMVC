@@ -57,6 +57,28 @@ function taskRepo(){
         })
     }
 
+    function replace(item){
+        return new Promise(async (resolve,reject) => {
+            const client = new MongoClient(url)
+            try {
+                await client.connect();
+                const db = client.db(dbName);
+                const destrucItem =(({ title, completed }) => ({ title, completed }))(item);
+                console.log("destrucItem"+JSON.stringify(destrucItem))
+                const addedItem = await db.collection("task").findOneAndReplace(
+                    {_id: ObjectID(item._id)},
+                    destrucItem,
+                    { returnDocument: 'after' }
+                    );
+                resolve(addedItem.value);
+                client.close();
+
+            } catch (error) {
+                reject(error)
+            }
+        })
+    }
+
     function remove(id){
         return new Promise(async (resolve,reject) => {
             const client = new MongoClient(url)
@@ -73,7 +95,7 @@ function taskRepo(){
         })
     }
 
-    return{loadData,get,add,remove}
+    return{loadData,get,add,replace,remove}
 
 }
 
