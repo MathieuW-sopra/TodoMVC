@@ -1,10 +1,12 @@
 /* eslint-disable */
 const { ObjectID } = require('bson');
 const { MongoClient } = require('mongodb');
+const config = require('../config/config')
 
 function taskRepo(){
-    const url = "mongodb+srv://dbadmin:12345@todomvc.u9mu0.mongodb.net/todomvc?retryWrites=true&w=majority";
-    const dbName = "todomvc";
+    const url = config.db.url;
+    const dbName = config.db.name;
+    const collectionName = "task";
 
     function get(query){
         return new Promise(async (resolve,reject) => {
@@ -12,8 +14,7 @@ function taskRepo(){
             try {
                 await client.connect();
                 const db = client.db(dbName);
-
-                const items = db.collection("task").find(query);
+                const items = db.collection(collectionName).find(query);
                 resolve(await items.toArray());
                 client.close();
 
@@ -29,8 +30,7 @@ function taskRepo(){
             try {
                 await client.connect();
                 const db = client.db(dbName);
-
-                results = await db.collection("task").insertMany(data);
+                results = await db.collection(collectionName).insertMany(data);
                 resolve(results);
                 client.close();
 
@@ -46,9 +46,9 @@ function taskRepo(){
             try {
                 await client.connect();
                 const db = client.db(dbName);
-
-                const addedItem = await db.collection("task").insertOne(item);
+                const addedItem = await db.collection(collectionName).insertOne(item);
                 resolve(addedItem);
+                console.log(JSON.stringify(addedItem));
                 client.close();
 
             } catch (error) {
@@ -64,7 +64,7 @@ function taskRepo(){
                 await client.connect();
                 const db = client.db(dbName);
                 const destrucItem =(({ title, completed }) => ({ title, completed }))(item);
-                const addedItem = await db.collection("task").findOneAndReplace(
+                const addedItem = await db.collection(collectionName).findOneAndReplace(
                     {_id: ObjectID(item._id)},
                     destrucItem,
                     { returnDocument: 'after' }
@@ -84,7 +84,7 @@ function taskRepo(){
             try {
                 await client.connect();
                 const db = client.db(dbName);
-                const removed = await db.collection("task").deleteOne({_id: ObjectID(id)});
+                const removed = await db.collection(collectionName).deleteOne({_id: ObjectID(id)});
                 resolve(removed.deletedCount === 1);
                 client.close();
 
