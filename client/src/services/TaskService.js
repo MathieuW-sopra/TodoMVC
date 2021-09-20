@@ -10,8 +10,9 @@ export default {
   replace (task) {
     return Api().put('task/replace', task)
   },
-  remove (task) {
-    return Api().delete('task/remove', task.id)
+  remove (id) {
+    console.log(id)
+    return Api().delete('task/remove', { data: {'id': id} })
   }
 
 }

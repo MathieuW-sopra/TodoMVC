@@ -4,7 +4,8 @@
   "description": "",
   "main": "index.js",
   "scripts": {
-    "start": "nodemon src/app.js --exec  \"npm run lint && node\"",
+    "start": "set DEBUG=app & nodemon src/app.js",
+    "debug": "set DEBUG=* & nodemon src/app.js",
     "lint": "eslint src/**/*.js"
   },
   "repository": {

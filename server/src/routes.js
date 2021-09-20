@@ -17,7 +17,7 @@ module.exports = (app) => {
   })
 
   app.delete('/task/remove',async (req, res)=>{
-    const response = await taskRepo.remove(req);
+    const response = await taskRepo.remove(req.body.id);
     res.send(response);
   })
   

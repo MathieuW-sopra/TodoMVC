@@ -25,6 +25,9 @@
                   <input type="checkbox" v-model="row.item.completed" v-on:change="replaceTask(row.item)" />
               </b-form-group>
             </template>
+            <template v-slot:cell(remove)="row">
+              <b-button variant="danger" v-on:click="removeTask(row)">Remove</b-button>
+            </template>
           </b-table>
         </b-col>
       </b-row>
@@ -40,10 +43,8 @@ export default {
   data() {
     return{
       tasks: [
-        // {title: 'test1',completed: false},
-        // {title: 'test2',completed: true}
         ],
-      fields: ['completed','title'],
+      fields: ['completed','title', 'remove'],
       form: {
         title: '',
         completed: false
@@ -78,10 +79,16 @@ export default {
       }
     },
     async replaceTask (item) {
-      const response = await TaskService.replace(item)
+      const response = await TaskService.replace(item);
       item = response.data;
+    },
+    async removeTask (row) {
+      const response = await TaskService.remove(row.item._id)
+      if (response.data) {
+        this.tasks.splice(row.index,1);
+      }
     }
-    
+
   }
 
 }

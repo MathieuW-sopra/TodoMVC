@@ -64,7 +64,6 @@ function taskRepo(){
                 await client.connect();
                 const db = client.db(dbName);
                 const destrucItem =(({ title, completed }) => ({ title, completed }))(item);
-                console.log("destrucItem"+JSON.stringify(destrucItem))
                 const addedItem = await db.collection("task").findOneAndReplace(
                     {_id: ObjectID(item._id)},
                     destrucItem,
@@ -82,7 +81,6 @@ function taskRepo(){
     function remove(id){
         return new Promise(async (resolve,reject) => {
             const client = new MongoClient(url)
-            console.log("id in taskRepo: "+id)
             try {
                 await client.connect();
                 const db = client.db(dbName);
