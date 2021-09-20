@@ -82,6 +82,7 @@ function taskRepo(){
     function remove(id){
         return new Promise(async (resolve,reject) => {
             const client = new MongoClient(url)
+            console.log("id in taskRepo: "+id)
             try {
                 await client.connect();
                 const db = client.db(dbName);

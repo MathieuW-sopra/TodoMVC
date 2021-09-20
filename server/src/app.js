@@ -26,7 +26,6 @@ require("./routes")(app)
 const client = new MongoClient(config.db.url);
 client.connect().then(() => {
   app.listen(config.port,()=>{
-    console.log(`listening on port ${chalk.green(config.port)}`);
     debug(`listening on port ${chalk.green(config.port)}`);
   })
 })
