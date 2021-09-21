@@ -2,3 +2,5 @@ client/node_modules/
 client/.nyc_output/
 server/node_modules/
 server/.nyc_output/
+server/coverage/
+workspace.code-workspace

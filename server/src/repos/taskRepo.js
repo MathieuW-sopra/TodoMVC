@@ -1,4 +1,3 @@
-/* eslint-disable */
 const { ObjectID } = require('bson');
 const { MongoClient } = require('mongodb');
 const config = require('../config/config')
@@ -16,22 +15,6 @@ function taskRepo(){
                 const db = client.db(dbName);
                 const items = db.collection(collectionName).find(query);
                 resolve(await items.toArray());
-                client.close();
-
-            } catch (error) {
-                reject(error)
-            }
-        })
-    }
-
-    function loadData(data){
-        return new Promise(async (resolve,reject) => {
-            const client = new MongoClient(url)
-            try {
-                await client.connect();
-                const db = client.db(dbName);
-                results = await db.collection(collectionName).insertMany(data);
-                resolve(results);
                 client.close();
 
             } catch (error) {
@@ -93,7 +76,7 @@ function taskRepo(){
         })
     }
 
-    return{loadData,get,add,replace,remove}
+    return{get,add,replace,remove}
 
 }
 
