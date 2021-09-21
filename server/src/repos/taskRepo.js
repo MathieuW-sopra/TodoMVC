@@ -48,7 +48,6 @@ function taskRepo(){
                 const db = client.db(dbName);
                 const addedItem = await db.collection(collectionName).insertOne(item);
                 resolve(addedItem);
-                console.log(JSON.stringify(addedItem));
                 client.close();
 
             } catch (error) {
