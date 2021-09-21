@@ -31,7 +31,7 @@ describe('taskRepo.js', () => {
 
   describe('when inserting one item', () => {
     it('should return the item with an auto-created id', async () => {
-      resultsAdd = await taskRepo.add({title:"test3", completed: true});
+      resultsAdd = await taskRepo.add({title:"test3", completed: false});
       assert.equal(resultsAdd.acknowledged,true);
       expect(resultsAdd.insertedId).to.exist;
     })
@@ -39,6 +39,18 @@ describe('taskRepo.js', () => {
       resultsGet = await taskRepo.get({_id : ObjectID(resultsAdd.insertedId)});
       assert.equal(resultsGet.length,1);
       assert.equal(ObjectID(resultsGet[0]._id).toString(),ObjectID(resultsAdd.insertedId).toString());
+    })
+  })
+  describe('when replacing one item', () => {
+    let resultsReplace;
+    it('should return true', async () => {
+      resultsReplace = await taskRepo.replace({_id : ObjectID(resultsAdd.insertedId), title:"test3", completed: true});
+      assert.equal(resultsReplace.completed,true);
+    })
+    it('should exist in the database with the same id and be unique', async () => {
+      resultsGet = await taskRepo.get({_id : ObjectID(resultsReplace._id)});
+      assert.equal(resultsGet.length,1);
+      assert.equal(ObjectID(resultsGet[0]._id).toString(),ObjectID(resultsReplace._id).toString());
     })
   })
   describe('when removing one item', () => {
@@ -49,7 +61,6 @@ describe('taskRepo.js', () => {
     })
     it('should no longer exist in the database', async () => {
       resultsGet = await taskRepo.get({_id : ObjectID(resultsAdd.insertedId)});
-      console.log("resultsGet "+JSON.stringify(resultsGet));
       assert.equal(resultsGet.length,0);
     })
   })
