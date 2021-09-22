@@ -2,6 +2,7 @@
   <div>
     <h1>
       todos
+      
     </h1>
     <b-container class="bv-example-row">
       <b-row>
@@ -19,16 +20,19 @@
             </b-form-group>
           </b-form>
 
-          <b-table :items="tasks" :fields="fields" striped responsive="sm">
+          <b-table :items="getTasks" :fields="fields" striped responsive="sm">
             <template v-slot:cell(completed)="row">
               <b-form-group>
-                  <input type="checkbox" v-model="row.item.completed" v-on:change="replaceTask(row.item)" />
+                  <input type="checkbox" v-model="row.item.completed" v-on:change="replaceTaskBack(row)" />
               </b-form-group>
             </template>
             <template v-slot:cell(remove)="row">
-              <b-button variant="danger" v-on:click="removeTask(row)">Remove</b-button>
+              <b-button variant="danger" v-on:click="removeTaskBack(row)">Remove</b-button>
             </template>
           </b-table>
+          <br>
+          <br>
+          <b-button variant="danger" v-on:click="increment()">Increment</b-button>
         </b-col>
       </b-row>
     </b-container>
@@ -38,12 +42,14 @@
 <script>
 /* eslint-disable */
 import TaskService from '@/services/TaskService'
+import { store } from '@/store/index.js'
+import { mapGetters } from 'vuex';
+
 export default {
   name: 'addTask',
+  store: store,
   data() {
     return{
-      tasks: [
-        ],
       fields: ['completed','title', 'remove'],
       form: {
         title: '',
@@ -51,19 +57,23 @@ export default {
       }
     }
   },
+  computed: mapGetters([
+      'getTasks', 'completedTasks', 'uncompletedTasks', 'completedTasksCount', 'replaceTasksByIndex',
+       'removeTasksByIndex'
+    ]),
+
   mounted () {
-    this.getTask()
+    this.getTaskBack()
   },
   methods: {
     onSubmit(event) {
-      console.log("form "+this.form.title)
-      this.addForm ()
+      this.addFormBack ()
     },
-    async getTask () {
+    async getTaskBack () {
       const response = await TaskService.get()
-      this.tasks = response.data
+      store.commit('setTasks', response.data)
     },
-    async addForm () {
+    async addFormBack () {
       if (this.form.title) {
         let formCopy = JSON.parse(JSON.stringify(this.form))//deep copy
         this.form.title='';
@@ -74,21 +84,20 @@ export default {
         })
         if(response.data.acknowledged){
           formCopy._id = response.data.insertedId;
-          this.tasks.push(formCopy);
+          store.commit('addTasks', formCopy)
         }
       }
     },
-    async replaceTask (item) {
-      const response = await TaskService.replace(item);
-      item = response.data;
+    async replaceTaskBack (row) {
+      const response = await TaskService.replace(row.item);
+      store.commit('replaceTasksByIndex', response, row.index)
     },
-    async removeTask (row) {
+    async removeTaskBack (row) {
       const response = await TaskService.remove(row.item._id)
       if (response.data) {
-        this.tasks.splice(row.index,1);
+        store.commit('removeTasksByIndex', row.index)
       }
-    }
-
+    },
   }
 
 }
