@@ -1,44 +1,33 @@
-const { ObjectID } = require('bson');
-const { MongoClient } = require('mongodb');
-const sinon = require("sinon");
-const jest = require('jest');
-const proxyquire = require("proxyquire");
-const config = require('../../src/config/config')
-const taskRepo = require('../../src/repos/taskRepo.js');
+const request = require('supertest');
+const makeApp = require('../../src/app.js');
 
-
-const url = config.db.url;
-const dbName = config.db.name;
-const collectionName = "task";
-const client = new MongoClient(url)
+const add = jest.fn();
+const app = makeApp({
+  add,
+})
 
 beforeEach(() => {
+  add.mockReset()
 });
 
 describe('when adding a task', () => {
-  it('should return the item with an auto-created id', async () => {
-    resultsAdd = await taskRepo.add({title:"test3", completed: false});
-    expect(resultsAdd.acknowledged).toEqual(true);
-    expect(resultsAdd.insertedId).toBeDefined()
+  it('should add the task to the database', async () => {
+    await request(app).post("/task/add").send({title:"testMock", completed: false})
+    expect(add.mock.calls.length).toBe(1);
   })
-  it('should exist in the database with the same id and be unique', async () => {
-    resultsGet = await taskRepo.get({_id : ObjectID(resultsAdd.insertedId)});
-    expect(resultsGet.length).toEqual(1);
-    expect(ObjectID(resultsGet[0]._id).toString()).toEqual(ObjectID(resultsAdd.insertedId).toString());
+
+  it('should respond with a json object containg acknowledged and id', async () => {
+    add.mockResolvedValue({"acknowledged":true,"insertedId":"614ca2630bff41e340538bf6"})
+    const response = await request(app).post("/task/add").send({title:"testMock", completed: false})
+    console.log("response.body: "+JSON.stringify(response.body));
+    expect(response.body.acknowledged).toEqual(true);
+    expect(response.body.insertedId).toBeDefined();
   })
-  // it('should not call insertOne if item has no title', async () => {
-  //   await client.connect();
-  //   const db = client.db(dbName);
-  //   const insertMock = sinon.mock(db.collection(collectionName));
-  //   insertMock.expects("insertOne").never();
-  //   const taskRepo = proxyquire("../../src/repos/taskRepo.js", db.collection(collectionName))
-  //   try {
-  //     taskRepo.add({completed: false})
-  //   } catch (error) {
-      
-  //   }
-  //   insertMock.verify();
-  // })
+
+  it('should respond with a 200 status code', async () => {
+    const response = await request(app).post("/task/add").send({title:"testMock", completed: false})
+    expect(response.statusCode).toBe(200)
+  })
 
 })
 
