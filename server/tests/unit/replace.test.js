@@ -1,7 +1,7 @@
 const { ObjectID } = require('bson');
 const taskRepo = require('../../src/repos/taskRepo.js');
 
-describe('when replacing one item', () => {
+describe.skip('when replacing one item', () => {
   it('should return the new object', async () => {
     resultsAdd = await taskRepo.add({title:"test3", completed: false});
     resultsReplace = await taskRepo.replace({_id : ObjectID(resultsAdd.insertedId), title:"test3", completed: true});

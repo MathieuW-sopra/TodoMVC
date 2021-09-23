@@ -1,9 +1,9 @@
-
+const debug = require("debug")("app");
 module.exports = (app) => {
   const taskRepo = require("./repos/taskRepo");
 
   app.get('/task/get',async (req, res)=>{
-    console.log("await taskRepo.get() "+JSON.stringify(await taskRepo.get()))
+    debug("/task/get "+JSON.stringify(await taskRepo.get()))
     res.send(await taskRepo.get());
   })
 

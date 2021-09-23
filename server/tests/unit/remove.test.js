@@ -1,7 +1,7 @@
 const { ObjectID } = require('bson');
 const taskRepo = require('../../src/repos/taskRepo.js');
 
-describe('when removing one item', () => {
+describe.skip('when removing one item', () => {
     it('should return true', async () => {
       resultsAdd = await taskRepo.add({title:"test3", completed: false});
       resultsRemove = await taskRepo.remove(resultsAdd.insertedId);

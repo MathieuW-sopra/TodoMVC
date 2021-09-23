@@ -11,7 +11,6 @@ export default {
     return Api().put('task/replace', task)
   },
   remove (id) {
-    console.log(id)
     return Api().delete('task/remove', { data: {'id': id} })
   }
 

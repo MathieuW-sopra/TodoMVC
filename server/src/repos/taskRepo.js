@@ -6,10 +6,10 @@ function taskRepo(){
     const url = config.db.url;
     const dbName = config.db.name;
     const collectionName = "task";
+    const client = new MongoClient(url)
 
     function get(query){
         return new Promise(async (resolve,reject) => {
-            const client = new MongoClient(url)
             try {
                 await client.connect();
                 const db = client.db(dbName);
@@ -25,7 +25,6 @@ function taskRepo(){
 
     function add(item){
         return new Promise(async (resolve,reject) => {
-            const client = new MongoClient(url)
             try {
                 await client.connect();
                 const db = client.db(dbName);
@@ -41,7 +40,6 @@ function taskRepo(){
 
     function replace(item){
         return new Promise(async (resolve,reject) => {
-            const client = new MongoClient(url)
             try {
                 await client.connect();
                 const db = client.db(dbName);
@@ -62,7 +60,6 @@ function taskRepo(){
 
     function remove(id){
         return new Promise(async (resolve,reject) => {
-            const client = new MongoClient(url)
             try {
                 await client.connect();
                 const db = client.db(dbName);
