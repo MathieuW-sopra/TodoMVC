@@ -2,7 +2,6 @@ const debug = require("debug")("app");
 const express = require('express');
 const morgan = require("morgan");
 const cors = require("cors");
-var bodyParser = require('body-parser')
 
 
 module.exports = (Repo) => {
