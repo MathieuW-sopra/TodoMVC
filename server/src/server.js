@@ -11,26 +11,17 @@ const mongoClient = new MongoClient(config.db.url);
 const app = makeApp(taskRepo);
 
 const httpsServer = https.createServer({
-  key: fs.readFileSync('./src/tls/server.key'),
-  cert: fs.readFileSync('./src/tls/server.crt'),
-  requestCert: true,
-  rejectUnauthorized: true,
-  ca: fs.readFileSync('./src/tls/ca.crt'),
-  },
-  (req, res) => {
-    if (!req.client.authorized) {
-      res.writeHead(401);
-      return res.end('Invalid client certificate authentication.');
-    }
-
-    res.writeHead(200);
-    res.end('Hello, world!');
+    key: fs.readFileSync('./src/tls/server.key'),
+    cert: fs.readFileSync('./src/tls/server.crt'),
+    requestCert: true,
+    rejectUnauthorized: true,
+    ca: fs.readFileSync('./src/tls/ca.crt'),
   },
   app)
 
 mongoClient.connect().then(() => {
-  httpsServer.listen(config.port,(req, res)=>{
-    debug("httpsServer :"+httpsServer.ca )
+  httpsServer.listen(config.port,()=>{
+    // debug("httpsServer :"+httpsServer.ca )
     debug(`listening on port ${chalk.green(config.port)}`);
   })
 })

@@ -12,8 +12,9 @@ module.exports = (Repo) => {
   app.use(cors());
 
   app.get('/task/get',async (req, res)=>{
+    debug("/task/get "+JSON.stringify(req.headers))
     const response = await Repo.get()
-    debug("/task/get "+JSON.stringify(response))
+    // debug("/task/get "+JSON.stringify(response))
     res.type('application/json')
     res.send(response);
   })

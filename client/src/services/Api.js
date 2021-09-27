@@ -1,5 +1,4 @@
 import axios from 'axios'
-// const https = require('https');
 
 export default () => {
   return axios.create({
