@@ -6,11 +6,11 @@ const makeApp = require('./app.js')
 const taskRepo = require("./repos/taskRepo");
 
 mongoose.connect(config.db.url);
-
 const db = mongoose.connection; 
-const app = makeApp(taskRepo(db));
 
-db.on('error', console.error.bind(console, 'Erreur lors de la connexion')); 
+const app = makeApp();
+
+db.on('error', console.error.bind(console, 'Error on connection')); 
 db.once('open', function (){
     debug("Connection to database OK"); 
     app.listen(config.port,()=>{

@@ -4,9 +4,9 @@ const morgan = require("morgan");
 const cors = require("cors");
 const helmet = require('helmet');
 const nocache = require("nocache");
+const taskRepo = require('./repos/taskRepo')
 
-
-module.exports = (Repo) => {
+module.exports = () => {
   const app = express();  
   app.use(helmet());
   app.use(nocache());
@@ -15,42 +15,13 @@ module.exports = (Repo) => {
   app.use(morgan("tiny"));
   app.use(cors());
 
-  app.get('/task/get',async (req, res)=>{
-    const response = await Repo.get()
-    res.type('application/json')
-    res.send(response);
-  })
+  app.get('/task/get', taskRepo.get);
 
-  app.post('/task/add',async (req, res)=>{
-    if (!req.body.title) {
-      res.sendStatus(400)
-      return
-    }
-    const response = await Repo.add(req.body);
-    debug("/task/add "+JSON.stringify(response))
-    res.type('application/json')
-    res.send(response);
-  })
+  app.post('/task/add', taskRepo.add);
 
-  app.put('/task/replace',async (req, res)=>{
-    if (!req.body.title || (req.body.completed === undefined)) {
-      res.sendStatus(400)
-      return
-    }
-    const response = await Repo.replace(req.body);
-    res.type('application/json')
-    res.send(response);
-  })
+  app.put('/task/replace', taskRepo.replace);
 
-  app.delete('/task/remove',async (req, res)=>{
-    if (!req.body.id) {
-      res.sendStatus(400)
-      return
-    }
-    const response = await Repo.remove(req.body.id);
-    res.type('application/json')
-    res.send(response);
-  })
+  app.delete('/task/remove', taskRepo.remove);
 
   return app
 
