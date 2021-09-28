@@ -3,7 +3,7 @@ const Task = require("../models/Task")
 
 module.exports = {
     async get(req, res){
-        res.type('application/json')
+        res.type('application/json');
         try {
             const resDB = await Task.find()
             res.send(resDB);
@@ -14,8 +14,8 @@ module.exports = {
         }
     },
 
-    async add(task){
-        res.type('application/json')
+    async add(req, res){
+        res.type('application/json');
         if (!req.body.title) {
             res.status(400).send({
                 error: 'task must have a title'
@@ -23,7 +23,7 @@ module.exports = {
             return
           }
         try {
-            const resDB = await Task.create(task);
+            const resDB = await Task.create(req.body);
             res.send(resDB);
         } catch (error) {
             res.status(500).send({
@@ -32,8 +32,8 @@ module.exports = {
         }
     },
 
-    async replace(item){
-        res.type('application/json')
+    async replace(req, res){
+        res.type('application/json');
         if (!req.body.title || (req.body.completed === undefined)) {
             res.status(400).send({
                 error: 'it must have at least one property to modify'
@@ -41,7 +41,7 @@ module.exports = {
             return
           }
         try {
-            const resDB = await Task.findByIdAndUpdate(item._id,item,{ returnDocument: 'after' })
+            const resDB = await Task.findByIdAndUpdate(req.body._id,req.body,{ returnDocument: 'after' })
             res.send(resDB);
         } catch (error) {
             res.status(500).send({
@@ -50,8 +50,8 @@ module.exports = {
         }
     },
 
-    async remove(id){
-        res.type('application/json')
+    async remove(req, res){
+        res.type('application/json');
         if (!req.body.id) {
             res.status(400).send({
                 error: 'must have an id'
@@ -59,7 +59,7 @@ module.exports = {
             return
           }
         try {
-            const resDB = await Task.findByIdAndRemove(id)
+            const resDB = await Task.findByIdAndRemove(req.body.id)
             res.send(resDB);
         } catch (error) {
             res.status(500).send({

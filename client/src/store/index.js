@@ -59,7 +59,6 @@ export const store = new Vuex.Store({
     },
     async removeTaskBack ({ commit }, id) {
       const response = await TaskService.remove(id)
-      console.log("response: "+ JSON.stringify(response));
       if (response.data) {
         commit('removeTasks', id)
       }
