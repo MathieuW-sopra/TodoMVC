@@ -45,19 +45,21 @@ export const store = new Vuex.Store({
     async addTaskBack ({ commit }, task) {
       const response = await TaskService.add({
         title: task.title,
-        completed: task.completed
+        completed: task.completed,
       })
-      if(response.data.acknowledged){
-        task._id = response.data.insertedId;
-        commit('addTasks', task)
+      if(response.data){
+        commit('addTasks', response.data)
       }
     },
     async replaceTaskBack ({ commit }, task) {
       const response = await TaskService.replace(task);
-      commit('replaceTasks', response)
+      if(response.data){
+        commit('replaceTasks', response.data)
+      }
     },
     async removeTaskBack ({ commit }, id) {
       const response = await TaskService.remove(id)
+      console.log("response: "+ JSON.stringify(response));
       if (response.data) {
         commit('removeTasks', id)
       }

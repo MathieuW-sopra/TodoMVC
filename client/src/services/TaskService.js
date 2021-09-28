@@ -1,6 +1,8 @@
-import Api from '@/services/Api'
+import Api from '@/services/Api';
+
 
 export default {
+  
   get () {
     return Api().get('task/get')
   },

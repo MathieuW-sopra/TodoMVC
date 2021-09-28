@@ -17,7 +17,6 @@ module.exports = (Repo) => {
 
   app.get('/task/get',async (req, res)=>{
     const response = await Repo.get()
-    debug("/task/get "+JSON.stringify(response))
     res.type('application/json')
     res.send(response);
   })
@@ -28,6 +27,7 @@ module.exports = (Repo) => {
       return
     }
     const response = await Repo.add(req.body);
+    debug("/task/add "+JSON.stringify(response))
     res.type('application/json')
     res.send(response);
   })

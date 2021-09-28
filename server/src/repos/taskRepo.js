@@ -1,80 +1,43 @@
 const { ObjectID } = require('bson');
-const { MongoClient } = require('mongodb');
-const config = require('../config/config')
+const Task = require("../models/Task")
 
-function taskRepo(){
-    const url = config.db.url;
-    const dbName = config.db.name;
-    const collectionName = "task";
-    const client = new MongoClient(url)
+module.exports = (db) => {
 
-    function get(query){
-        return new Promise(async (resolve,reject) => {
-            try {
-                await client.connect();
-                const db = client.db(dbName);
-                const items = db.collection(collectionName).find(query);
-                resolve(await items.toArray());
-                client.close();
+    async function get(query){
+        try {
+            return await Task.find(query)
 
-            } catch (error) {
-                reject(error)
-            }
-        })
+        } catch (error) {
+            console.error(error)
+        }
     }
 
-    function add(item){
-        return new Promise(async (resolve,reject) => {
-            try {
-                await client.connect();
-                const db = client.db(dbName);
-                const addedItem = await db.collection(collectionName).insertOne(item);
-                resolve(addedItem);
-                client.close();
+    async function add(task){
+        try {
+            return await Task.create(task)
+        } catch (error) {
+            console.error(error)
+        }
 
-            } catch (error) {
-                reject(error)
-            }
-        })
     }
 
-    function replace(item){
-        return new Promise(async (resolve,reject) => {
-            try {
-                await client.connect();
-                const db = client.db(dbName);
-                const destrucItem =(({ title, completed }) => ({ title, completed }))(item);
-                const addedItem = await db.collection(collectionName).findOneAndReplace(
-                    {_id: ObjectID(item._id)},
-                    destrucItem,
-                    { returnDocument: 'after' }
-                    );
-                resolve(addedItem.value);
-                client.close();
-
-            } catch (error) {
-                reject(error)
-            }
-        })
+    async function replace(item){
+        try {
+            return await Task.findByIdAndUpdate(item._id,item,{ returnDocument: 'after' })
+        } catch (error) {
+            console.error(error)
+        }
     }
 
-    function remove(id){
-        return new Promise(async (resolve,reject) => {
-            try {
-                await client.connect();
-                const db = client.db(dbName);
-                const removed = await db.collection(collectionName).deleteOne({_id: ObjectID(id)});
-                resolve(removed.deletedCount === 1);
-                client.close();
-
-            } catch (error) {
-                reject(error)
-            }
-        })
+    async function remove(id){
+        try {
+            const res = await Task.findByIdAndRemove(id)
+            return res
+        } catch (error) {
+            console.error(error)
+        }
     }
 
     return{get,add,replace,remove}
 
 }
-
-module.exports = taskRepo();
