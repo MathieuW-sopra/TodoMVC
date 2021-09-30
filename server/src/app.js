@@ -4,6 +4,7 @@ const cors = require("cors");
 const helmet = require('helmet');
 const nocache = require("nocache");
 const taskRepo = require('./repos/taskRepo')
+const Task = require("./models/Task")
 
 module.exports = () => {
   const app = express();  
@@ -14,13 +15,13 @@ module.exports = () => {
   app.use(morgan("tiny"));
   app.use(cors());
 
-  app.get('/task/get', taskRepo.get);
+  app.get('/task/get', taskRepo(Task).get);
 
-  app.post('/task/add', taskRepo.add);
+  app.post('/task/add', taskRepo(Task).add);
 
-  app.put('/task/replace', taskRepo.replace);
+  app.put('/task/replace', taskRepo(Task).replace);
 
-  app.delete('/task/remove', taskRepo.remove);
+  app.delete('/task/remove', taskRepo(Task).remove);
 
   return app
 
