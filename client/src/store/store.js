@@ -6,7 +6,10 @@ Vue.use(Vuex)
 
 export const store = new Vuex.Store({
   state: {
-    tasks: []
+    tasks: [],
+    token: null,
+    user: null,
+    isUserLoggedIn: false
   },
   getters: {
     getTasks: state => {
@@ -20,7 +23,7 @@ export const store = new Vuex.Store({
     },
     completedTasksCount: (state, getters) => {
       return getters.completedTasks.length
-    }
+    },
   },
   mutations: {
     setTasks(state, task){
@@ -35,6 +38,13 @@ export const store = new Vuex.Store({
     },
     removeTasks(state, id){
       state.tasks = state.tasks.filter(item => item._id !== id);
+    },
+    setToken (state, token) {
+      state.token = token
+      state.isUserLoggedIn = !!(token)
+    },
+    setUser (state, user) {
+      state.user = user
     }
   },
   actions: {
@@ -63,6 +73,12 @@ export const store = new Vuex.Store({
         commit('removeTasks', id)
       }
     },
+    setToken ({commit}, token) {
+      commit('setToken', token)
+    },
+    setUser ({commit}, user) {
+      commit('setUser', user)
+    }
   },
   modules: {
   }

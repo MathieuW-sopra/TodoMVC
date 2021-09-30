@@ -37,7 +37,7 @@
 
 <script>
 /* eslint-disable */
-import { store } from '@/store/index.js'
+import { store } from '@/store/store.js'
 import { mapGetters } from 'vuex';
 import { mapActions } from 'vuex'
 

@@ -1,21 +1,28 @@
 import Vue from 'vue'
 import VueRouter from 'vue-router'
-import Home from '../views/Home.vue'
-import Vuex from '../views/Vuex.vue'
+import Register from '@/components/Register'
+import Login from '@/components/Login'
+import Tasks from '@/components/Tasks'
+
 
 Vue.use(VueRouter)
 
 const routes = [
   {
-    path: '/',
-    name: 'Home',
-    component: Home
+    path: '/tasks',
+    name: 'tasks',
+    component: Tasks
   },
   {
-    path: '/Vuex',
-    name: 'Vuex',
-    component: Vuex
-  }
+    path: '/register',
+    name: 'register',
+    component: Register
+  },
+  {
+    path: '/login',
+    name: 'login',
+    component: Login
+  },
 ]
 
 const router = new VueRouter({

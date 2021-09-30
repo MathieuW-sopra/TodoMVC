@@ -23,7 +23,6 @@ module.exports = (Task) => {
             res.send({
                 error: 'task must have a title'
             })
-            console.log("add 400 req.body.title: "+req.body.title)
             return
           }
         try {
@@ -41,7 +40,7 @@ module.exports = (Task) => {
 
     async function replace(req, res){
         res.type('application/json');
-        if (!req.body.title || (req.body.completed === undefined)) {
+        if (!req.body.title && (req.body.completed === undefined)) {
             res.status(400)
             res.send({
                 error: 'it must have at least one property to modify'
