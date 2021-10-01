@@ -5,7 +5,7 @@ module.exports = (Task) => {
     async function get(req, res){
         res.type('application/json');
         try {
-            const resDB = await Task.find();
+            const resDB = await Task.find().limit(5);
             res.status(200);
             res.send(resDB);
         } catch (error) {
@@ -27,7 +27,6 @@ module.exports = (Task) => {
           }
         try {
             const resDB = await Task.create(req.body);
-            console.log("add 200 resDB: "+resDB)
             res.status(200)
             res.send(resDB);
         } catch (error) {

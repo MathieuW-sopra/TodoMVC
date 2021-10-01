@@ -1,10 +1,15 @@
 import Vue from 'vue'
 import Vuex from 'vuex'
 import TaskService from '@/services/TaskService'
+import createPersistedState from 'vuex-persistedstate'
 
 Vue.use(Vuex)
 
 export const store = new Vuex.Store({
+  strict: true,
+  plugins: [
+    createPersistedState()
+  ],
   state: {
     tasks: [],
     token: null,

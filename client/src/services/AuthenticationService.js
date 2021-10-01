@@ -5,7 +5,6 @@ export default {
     return Api().post('register', credentials)
   },
   login (credentials) {
-    console.log(JSON.stringify(credentials))
     return Api().post('login', credentials)
   }
 }

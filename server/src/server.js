@@ -8,7 +8,9 @@ const taskRepo = require("./repos/taskRepo");
 mongoose.connect(config.db.url);
 const db = mongoose.connection; 
 
+
 const app = makeApp();
+
 
 db.on('error', console.error.bind(console, 'Error on connection')); 
 db.once('open', function (){

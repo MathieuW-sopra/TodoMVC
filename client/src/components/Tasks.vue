@@ -6,7 +6,7 @@
     <b-container class="bv-example-row">
       <b-row>
         <b-col>
-          <b-form @submit="addFormBack">
+          <b-form v-if="$store.state.isUserLoggedIn" @submit="addFormBack">
             <b-form-group id="input-group-1">
               <b-form-input
                 id="input-1"
@@ -22,11 +22,11 @@
           <b-table :items="getTasks" :fields="fields" striped responsive="sm">
             <template v-slot:cell(completed)="row">
               <b-form-group>
-                  <input type="checkbox" v-model="row.item.completed" v-on:change="replaceTaskBack(row.item)" />
+                  <input :disabled="!$store.state.isUserLoggedIn" type="checkbox" v-model="row.item.completed" v-on:change="replaceTaskBack(row.item)" />
               </b-form-group>
             </template>
             <template v-slot:cell(remove)="row">
-              <b-button variant="danger" v-on:click="removeTaskBack(row.item._id)">Remove</b-button>
+              <b-button :disabled="!$store.state.isUserLoggedIn" variant="danger" v-on:click="removeTaskBack(row.item._id)">Remove</b-button>
             </template>
           </b-table>
         </b-col>
@@ -47,7 +47,7 @@ export default {
   store: store,
   data() {
     return{
-      fields: ['completed','title', 'remove'],
+      fields: ['title', 'completed', 'remove'],
       form: {
         title: '',
         completed: false

@@ -1,20 +1,16 @@
+const jwt = require('jsonwebtoken')
+const config = require('../config/config')
 const debug = require("debug")("app");
 // const User = require("../models/User")
 
+function jwtSignUser (user) {
+  const ONE_WEEK = 60 * 60 * 24 * 7
+  return jwt.sign(user, config.authentication.jwtSecret, {
+    expiresIn: ONE_WEEK
+  })
+}
+
 module.exports = (User) => {
-	async function get(req, res) {
-		res.type('application/json');
-		try {
-			const resDB = await User.find();
-			res.status(200);
-			res.send(resDB);
-		} catch (error) {
-			res.status(500)
-			res.send({
-				error: 'an error has occured trying to get the Users'
-			})
-		}
-	}
 
 	async function login(req, res) {
 		res.type('application/json');
@@ -34,8 +30,12 @@ module.exports = (User) => {
 					error: 'The login information was incorrect'
 				})
 			}
+			const userJson = user.toJSON()
 			res.status(200);
-			res.send(res);
+			res.send({
+        user: userJson,
+        token: jwtSignUser(userJson)
+      })
 		} catch (error) {
 			res.status(500)
 			res.send({
@@ -54,9 +54,13 @@ module.exports = (User) => {
 			return
 		}
 		try {
-			const resDB = await User.create(req.body);
+			const user = await User.create(req.body);
 			res.status(200)
-			res.send(resDB);
+			const userJson = user.toJSON()
+      res.send({
+        user: userJson,
+        token: jwtSignUser(userJson)
+      })
 		} catch (error) {
 			res.status(500)
 			res.send({
@@ -65,46 +69,5 @@ module.exports = (User) => {
 		}
 	}
 
-	async function replace(req, res) {
-		res.type('application/json');
-		if (!req.body.email && !req.body.password) {
-			res.status(400)
-			res.send({
-				error: 'it must have at least one property to modify'
-			})
-			return
-		}
-		try {
-			const resDB = await User.findByIdAndUpdate(req.body._id, req.body, { returnDocument: 'after' })
-			res.status(200)
-			res.send(resDB);
-		} catch (error) {
-			res.status(500)
-			res.send({
-				error: 'an error has occured trying to replace the User'
-			})
-		}
-	}
-
-	async function remove(req, res) {
-		res.type('application/json');
-		if (!req.body.id) {
-			res.status(400)
-			res.send({
-				error: 'must have an id'
-			})
-			return
-		}
-		try {
-			const resDB = await User.findByIdAndRemove(req.body.id)
-			res.status(200)
-			res.send(resDB);
-		} catch (error) {
-			res.status(500)
-			res.send({
-				error: 'an error has occured trying to remove the User'
-			})
-		}
-	}
-	return { get, login, register, replace, remove }
+	return {login, register}
 }
