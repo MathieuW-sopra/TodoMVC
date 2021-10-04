@@ -22,27 +22,27 @@ beforeEach(() => {
 
 describe('when adding a task', () => {
   
-  // test('should add the task to the database', async () => {
-  //   await taskRepo(Task).add(req, res)
-  //   expect(create.mock.calls.length).toBe(1);
-  // })
+  test('should add the task to the database', async () => {
+    await taskRepo(Task).add(req, res)
+    expect(create.mock.calls.length).toBe(1);
+  })
 
-  // test('should respond with a json object containg acknowledged and id', async () => {
-  //   const bodyData={"acknowledged":true,"insertedId":"614ca2630bff41e340538bf6"};
-  //   create.mockResolvedValue(bodyData)
-  //   await taskRepo(Task).add(req, res)
-  //   expect(res.send).toBeCalledWith(bodyData);
-  // })
+  test('should respond with a json object containg acknowledged and id', async () => {
+    const bodyData={"acknowledged":true,"insertedId":"614ca2630bff41e340538bf6"};
+    create.mockResolvedValue(bodyData)
+    await taskRepo(Task).add(req, res)
+    expect(res.send).toBeCalledWith(bodyData);
+  })
 
-  // test('should respond with a 200 status code', async () => {
-  //   await taskRepo(Task).add(req, res)
-  //   expect(res.type).toBeCalledWith('application/json')
-  // })
+  test('should respond with a 200 status code', async () => {
+    await taskRepo(Task).add(req, res)
+    expect(res.type).toBeCalledWith('application/json')
+  })
 
-  // test("should specify json in the content type header", async () => {
-  //   await taskRepo(Task).add(req, res)
-  //   expect(res.type).toBeCalledWith('application/json')
-  // })
+  test("should specify json in the content type header", async () => {
+    await taskRepo(Task).add(req, res)
+    expect(res.type).toBeCalledWith('application/json')
+  })
 
   describe("when the title is missing", () => {
     test("should respond with a status code of 400", async () => {

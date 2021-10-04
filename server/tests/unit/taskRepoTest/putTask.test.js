@@ -47,16 +47,10 @@ describe('when replacing one task', () => {
 
   describe("when the title and completed is missing", () => {
     test("should respond with a status code of 400", async () => {
-      const bodyData = [
-        {completed: false},
-        {title: "testMock"},
-        {}
-      ]
-      for (const body of bodyData) {
-        req.body=body;
-        await taskRepo(Task).replace(req, res)
-        expect(res.status).toBeCalledWith(400)
-      }
+      req.body={};
+      await taskRepo(Task).replace(req, res)
+      expect(res.status).toBeCalledWith(400)
+    
     })
   })
 

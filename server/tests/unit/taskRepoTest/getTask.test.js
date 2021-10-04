@@ -6,11 +6,11 @@ const find = jest.fn();
 const Task = makeTask
 Task.find=find;
 
-let req = { body: {title:"testTitle",completed:true} };
+let req = { body: { title:"testTitle",completed:true } };
 const type = jest.fn();
 const status = jest.fn();
 const send = jest.fn();
-let res = { type: type, status: status,send: send};
+let res = { type: type, status: status,send: send };
 
 beforeEach(() => {
   find.mockReset()
@@ -21,16 +21,16 @@ beforeEach(() => {
   res = { type: type, status: status,send: send};
 });
 
-describe('when all getting tasks', () => {
+describe('when getting all tasks', () => {
 
-  test('should get all tasks in the database', async () => {
+  test('should getting all tasks in the database', async () => {
     await taskRepo(Task).get(req, res)
     expect(find.mock.calls.length).toBe(1);
   })
 
   test('should respond all tasks in the database', async () => {
-    req.body =[{id:1, title:"testmock1", completed:true},{id:2, title:"testmock2", completed:false}]
-    find.mockResolvedValue(req.body)
+    find.mockResolvedValue({test:"test",limit:jest.fn()});
+    // find.limit.mockResolvedValue(req.body);
     await taskRepo(Task).get(req, res)
     expect(res.send).toBeCalledWith(req.body);
   })

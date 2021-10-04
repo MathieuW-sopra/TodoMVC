@@ -1,10 +1,7 @@
 const passport = require('passport')
 
 module.exports = function (req, res, next) {
-  passport.authenticate('jwt',async function (err, user, info) {
-    console.log("user: "+user)
-    console.log("error: "+err)
-    console.log("info: "+info)
+  passport.authenticate('jwt',async function (err, user) {
     
     if (err || !user) {
       res.status(403).send({
