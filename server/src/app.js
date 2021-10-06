@@ -3,9 +3,9 @@ const morgan = require("morgan");
 const cors = require("cors");
 const helmet = require('helmet');
 const nocache = require("nocache");
-const taskRepo = require('./repos/taskRepo')
+const taskRepo = require('./controllers/taskController')
 const Task = require("./models/Task")
-const authenticationRepo = require('./repos/authenticationRepo')
+const authenticationRepo = require('./controllers/authController')
 const User = require("./models/User")
 const isAuthenticated = require('./policies/isAuthenticated')
 

@@ -1,5 +1,5 @@
 const makeTask = require("../../../src/models/Task")
-const taskRepo = require('../../../src/repos/taskRepo')
+const taskRepo = require('../../../src/controllers/taskController')
 
 const create = jest.fn();
 const Task = makeTask

@@ -5,14 +5,14 @@ const crypto = require('crypto')
 let salt = 'f844b09ff50c'
 // const User = require("../models/User")
 
-function jwtSignUser (user) {
-  const ONE_WEEK = 60 * 60 * 24 * 7
-  return jwt.sign(user, config.authentication.jwtSecret, {
-    expiresIn: ONE_WEEK
-  })
-}
-
 module.exports = (User) => {
+
+	function jwtSignUser (user) {
+		const ONE_WEEK = 60 * 60 * 24 * 7
+		return jwt.sign(user, config.authentication.jwtSecret, {
+			expiresIn: ONE_WEEK
+		})
+	}
 
 	async function register(req, res) {
 		res.type('application/json');
@@ -86,5 +86,5 @@ module.exports = (User) => {
 		}
 	}
 
-	return {login, register}
+	return {jwtSignUser, login, register}
 }

@@ -3,7 +3,7 @@ const debug = require("debug")("app");
 const mongoose = require('mongoose');
 const config = require('./config/config')
 const makeApp = require('./app.js')
-const taskRepo = require("./repos/taskRepo");
+const taskRepo = require("./controllers/taskController");
 
 mongoose.connect(config.db.url);
 const db = mongoose.connection; 
