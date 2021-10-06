@@ -1,8 +1,7 @@
 const jwt = require('jsonwebtoken')
 const config = require('../config/config')
-const debug = require("debug")("app");
 const crypto = require('crypto')
-let salt = 'f844b09ff50c'
+const salt = config.authentication.cryptoSalt
 // const User = require("../models/User")
 
 module.exports = (User) => {
@@ -35,7 +34,6 @@ module.exports = (User) => {
 		let hash = crypto.pbkdf2Sync(req.body.password, salt,  
 			1000, 64, `sha512`).toString(`hex`);
 			req.body.password = hash;
-			console.log("req.body: "+req.body)
 		try {
 			const user = await User.create(req.body);
 			// const user = await User.create(req.body);

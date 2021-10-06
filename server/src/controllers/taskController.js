@@ -1,17 +1,13 @@
-const debug = require("debug")("app");
 const getLimit = 5;
-// const Task = require("../models/Task")
 
 module.exports = (Task) => {
     async function get(req, res){
         res.type('application/json');
         try {
-            console.log("find :" + JSON.stringify(await Task.find()));
-            const resDB = await Task.find().limit();
+            const resDB = await Task.find().limit(getLimit);
             res.status(200);
             res.send(resDB);
         } catch (error) {
-            console.log(error)
             res.status(500)
             res.send({
                 error: 'an error has occured trying to get the tasks'

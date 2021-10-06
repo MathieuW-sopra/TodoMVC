@@ -4,8 +4,8 @@
   "description": "",
   "main": "index.js",
   "scripts": {
-    "start": "set DEBUG=app & nodemon src/server.js",
-    "debug": "set DEBUG=* & nodemon src/server.js",
+    "start": "set DEBUG=app & nodemon src/app.js",
+    "debug": "set DEBUG=* & nodemon src/app.js",
     "lint": "eslint src/**/*.js",
     "test": "jest --coverage"
   },
