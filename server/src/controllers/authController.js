@@ -2,12 +2,11 @@ const jwt = require('jsonwebtoken')
 const config = require('../config/config')
 const crypto = require('crypto')
 const salt = config.authentication.cryptoSalt
-// const User = require("../models/User")
 
 module.exports = (User) => {
 
 	function jwtSignUser (user) {
-		const ONE_WEEK = 60 * 60 * 24 * 7
+		const ONE_WEEK = 60 * 60 * 24 * 7;
 		return jwt.sign(user, config.authentication.jwtSecret, {
 			expiresIn: ONE_WEEK
 		})
@@ -36,9 +35,8 @@ module.exports = (User) => {
 			req.body.password = hash;
 		try {
 			const user = await User.create(req.body);
-			// const user = await User.create(req.body);
 			res.status(200)
-			const userJson = user.toJSON()
+			const userJson = JSON.parse(JSON.stringify(user))
       res.send({
         user: userJson,
         token: jwtSignUser(userJson)
@@ -70,7 +68,7 @@ module.exports = (User) => {
 					error: 'The login information was incorrect'
 				})
 			}
-			const userJson = user.toJSON()
+			const userJson = JSON.parse(JSON.stringify(user))
 			res.status(200);
 			res.send({
         user: userJson,
