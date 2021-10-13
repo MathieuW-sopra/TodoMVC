@@ -6,6 +6,7 @@ module.exports = {
    },
    authentication: {
       jwtSecret: process.env.JWT_SECRET || 'secret',
-      cryptoSalt: process.env.CRYPTO_SALT || 'f844b09ff50c'
-    }
+      cryptoSalt: process.env.CRYPTO_SALT || 'f844b09ff50c',
+   },
+   pageLength: process.env.PAGE_LENGTH || 5,
 }

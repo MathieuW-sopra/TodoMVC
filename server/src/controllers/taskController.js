@@ -1,3 +1,5 @@
+const config = require('../config/config')
+
 module.exports = (Task) => {
 
     async function get(req, res){
@@ -20,14 +22,14 @@ module.exports = (Task) => {
         if(req.query.page<1){
             res.status(400)
             res.send({
-                error: 'page must have a number superior to 0'
+                error: 'page  number must have a number greater than 0'
             })
             return
         }
         try {
             const options = {
                 page: req.query.page,
-                limit: 5,
+                limit: config.pageLength,
                 collation: {
                   locale: 'en',
                 },

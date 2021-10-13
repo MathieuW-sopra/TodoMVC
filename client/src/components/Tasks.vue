@@ -15,7 +15,7 @@
                 required
                 v-on:keyup.enter="submit"
               ></b-form-input>
-              <b-button type="submit" variant="primary">Submit</b-button>
+              <br>
             </b-form-group>
           </b-form>
 
@@ -96,11 +96,8 @@ export default {
     },
 
     getPage(){
-      if(this.pageNumber>=1){
+      if(this.pageState){
         this.getPageTaskBack(this.pageNumber)
-      }
-      else{
-        this.pageState=false
       }
     }
 
