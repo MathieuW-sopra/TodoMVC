@@ -1,112 +1,70 @@
 const config = require('../config/config')
+const statusManager = require('../services/statusManager/task')
 
 module.exports = (Task) => {
 
     async function get(req, res){
-        res.type('application/json');
         try {
             const query = Task.find()
-            const resDB = await query;
-            res.status(200);
-            res.send(resDB);
+            const task = await query;
+            statusManager(res, 200, task);
         } catch (error) {
-            res.status(500)
-            res.send({
-                error: 'an error has occured trying to get the tasks'
-            })
+            statusManager(res, 500, 'an error has occured trying to get the tasks');
         }
     }
 
     async function getPage(req, res){
-        res.type('application/json');
         if(req.query.page<1){
-            res.status(400)
-            res.send({
-                error: 'page  number must have a number greater than 0'
-            })
-            return
+            return statusManager(res, 400, 'page  number must have a number greater than 0');
         }
         try {
             const options = {
                 page: req.query.page,
                 limit: config.pageLength,
-                collation: {
-                  locale: 'en',
-                },
+                collation: {locale: 'en',},
             };
             const query = Task.find()
-            const resDB = await Task.paginate(query,options)
-            res.status(200);
-            res.send(resDB.docs);
+            const task = await Task.paginate(query,options)
+            statusManager(res, 200, task.docs);
         } catch (error) {
             console.log(error)
-            res.status(500)
-            res.send({
-                error: 'an error has occured trying to get the tasks'
-            })
+            statusManager(res, 500, 'an error has occured trying to get the tasks');
         }
     }
 
     async function add(req, res){
-        res.type('application/json');
         if (!req.body.title) {
-            res.status(400)
-            res.send({
-                error: 'task must have a title'
-            })
-            return
+            return statusManager(res, 400, 'task must have a title');
           }
         try {
-            const resDB = await Task.create(req.body);
-            res.status(200)
-            res.send(resDB);
+            const task = await Task.create(req.body);
+            statusManager(res, 200, task);
         } catch (error) {
-            res.status(500)
-            res.send({
-                error: 'an error has occured trying to add the task'
-            })
+            statusManager(res, 500, 'an error has occured trying to add the task');
         }
     }
 
     async function replace(req, res){
-        res.type('application/json');
         if (!req.body.title && (req.body.completed === undefined)) {
-            res.status(400)
-            res.send({
-                error: 'it must have at least one property to modify'
-            })
-            return
+            return statusManager(res, 400, 'it must have at least one property to modify');
           }
         try {
-            const resDB = await Task.findByIdAndUpdate(req.body._id,req.body,{ returnDocument: 'after' })
-            res.status(200)
-            res.send(resDB);
+            const task = await Task.findByIdAndUpdate(req.body._id,req.body,{ returnDocument: 'after' })
+            statusManager(res, 200, task);
         } catch (error) {
-            res.status(500)
-            res.send({
-                error: 'an error has occured trying to replace the task'
-            })
+            statusManager(res, 500, 'an error has occured trying to replace the task');
         }
     }
 
     async function remove(req, res){
-        res.type('application/json');
         if (!req.body.id) {
-            res.status(400)
-            res.send({
-                error: 'must have an id'
-            })
-            return
+            return statusManager(res, 400, 'it must have an id');
           }
         try {
-            const resDB = await Task.findByIdAndRemove(req.body.id)
-            res.status(200)
-            res.send(resDB);
+            const task = await Task.findByIdAndRemove(req.body.id)
+            statusManager(res, 200, task);
         } catch (error) {
-            res.status(500)
-            res.send({
-                error: 'an error has occured trying to remove the task'
-            })
+            statusManager(res, 500, 'an error has occured trying to remove the task');
         }
     }
     return {get,getPage,add,replace,remove}

@@ -1,0 +1,6 @@
+name: 'TodoMVC'
+description: 'manage task'
+
+runs:
+  using: 'node14'
+  main: 'app.js'

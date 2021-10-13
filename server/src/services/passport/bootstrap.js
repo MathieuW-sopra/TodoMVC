@@ -1,11 +1,11 @@
 const passport = require('passport')
-const User = require('../models/User')
+const User = require('../../models/User')
 const { ObjectId } = require('mongodb');
 
 const JwtStrategy = require('passport-jwt').Strategy
 const ExtractJwt = require('passport-jwt').ExtractJwt
 
-const config = require('../config/config')
+const config = require('../../config/config')
 
 passport.use(
   new JwtStrategy({
