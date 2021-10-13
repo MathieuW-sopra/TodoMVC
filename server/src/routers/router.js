@@ -10,6 +10,7 @@ module.exports = (app) => {
   app.post('/register', authenticationRepo(User).register)
 
   app.get('/task/get', taskRepo(Task).get);
+  app.get('/task/getPage', taskRepo(Task).getPage);
   app.post('/task/add', isAuthenticated, taskRepo(Task).add);
   app.put('/task/replace', isAuthenticated, taskRepo(Task).replace);
   app.delete('/task/remove', isAuthenticated, taskRepo(Task).remove);

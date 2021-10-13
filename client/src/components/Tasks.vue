@@ -29,6 +29,18 @@
               <b-button :disabled="!$store.state.isUserLoggedIn" variant="danger" v-on:click="removeTaskBack(row.item._id)">Remove</b-button>
             </template>
           </b-table>
+          <b-col sm="1">
+            <span>Page </span>
+            <b-form-input id="input-page"
+             v-model="pageNumber" 
+             :state="pageState" 
+             v-on:keyup.enter="getPage()" 
+             placeholder="Page n°">
+            </b-form-input>
+            <b-form-invalid-feedback id="input-page-feedback">
+              Enter a correct number
+            </b-form-invalid-feedback>
+          </b-col>
         </b-col>
       </b-row>
     </b-container>
@@ -51,20 +63,27 @@ export default {
       form: {
         title: '',
         completed: false
-      }
+      },
+      pageNumber:1,
     }
   },
-  computed: mapGetters([
+  computed:{
+    ...mapGetters([
       'getTasks', 'completedTasks', 'uncompletedTasks', 'completedTasksCount', 'replaceTasks',
        'removeTasks'
     ]),
+    pageState() {
+      return this.pageNumber > 0 ? true : false
+    },
+  },
 
   mounted () {
-    this.getTaskBack()
+    this.getPageTaskBack(this.pageNumber)
   },
+
   methods: {
     ...mapActions([
-      'getTaskBack', 'addTaskBack', 'replaceTaskBack', 'removeTaskBack'
+      'getTaskBack', 'addTaskBack', 'replaceTaskBack', 'removeTaskBack', 'getPageTaskBack'
     ]),
 
     addFormBack () {
@@ -75,6 +94,15 @@ export default {
         this.addTaskBack(formCopy);
       }
     },
+
+    getPage(){
+      if(this.pageNumber>=1){
+        this.getPageTaskBack(this.pageNumber)
+      }
+      else{
+        this.pageState=false
+      }
+    }
 
   }
 

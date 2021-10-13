@@ -53,8 +53,12 @@ export const store = new Vuex.Store({
     }
   },
   actions: {
-    async getTaskBack ({ commit }) {
-      const response = await TaskService.get()
+    // async getTaskBack ({ commit }) {
+    //   const response = await TaskService.get()
+    //   commit('setTasks', response.data)
+    // },
+    async getPageTaskBack ({ commit }, page) {
+      const response = await TaskService.getPage(page)
       commit('setTasks', response.data)
     },
     async addTaskBack ({ commit }, task) {

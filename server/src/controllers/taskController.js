@@ -5,7 +5,6 @@ module.exports = (Task) => {
         try {
             const query = Task.find()
             const resDB = await query;
-            console.log("resDB: "+JSON.stringify(resDB))
             res.status(200);
             res.send(resDB);
         } catch (error) {
@@ -18,20 +17,27 @@ module.exports = (Task) => {
 
     async function getPage(req, res){
         res.type('application/json');
+        if(req.query.page<1){
+            res.status(400)
+            res.send({
+                error: 'page must have a number superior to 0'
+            })
+            return
+        }
         try {
             const options = {
-                page: 1,
+                page: req.query.page,
                 limit: 5,
                 collation: {
                   locale: 'en',
                 },
-              };
+            };
             const query = Task.find()
             const resDB = await Task.paginate(query,options)
-            console.log("resDB: "+JSON.stringify(resDB))
             res.status(200);
             res.send(resDB.docs);
         } catch (error) {
+            console.log(error)
             res.status(500)
             res.send({
                 error: 'an error has occured trying to get the tasks'
