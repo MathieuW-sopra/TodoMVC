@@ -29,18 +29,12 @@
               <b-button :disabled="!$store.state.isUserLoggedIn" variant="danger" v-on:click="removeTaskBack(row.item._id)">Remove</b-button>
             </template>
           </b-table>
-          <b-col sm="1">
-            <span>Page </span>
-            <b-form-input id="input-page"
-             v-model="pageNumber" 
-             :state="pageState" 
-             v-on:keyup.enter="getPage()" 
-             placeholder="Page n°">
-            </b-form-input>
-            <b-form-invalid-feedback id="input-page-feedback">
-              Enter a correct number
-            </b-form-invalid-feedback>
-          </b-col>
+          <b-pagination
+            v-model="currentPage"
+            :total-rows="getInfoPages.totalDocs"
+            :per-page="getInfoPages.limit"
+            aria-controls="my-table"
+          ></b-pagination>
         </b-col>
       </b-row>
     </b-container>
@@ -64,21 +58,25 @@ export default {
         title: '',
         completed: false
       },
-      pageNumber:1,
+      currentPage:1,
     }
   },
   computed:{
     ...mapGetters([
-      'getTasks', 'completedTasks', 'uncompletedTasks', 'completedTasksCount', 'replaceTasks',
+      'getTasks','getInfoPages', 'completedTasks', 'uncompletedTasks', 'completedTasksCount', 'replaceTasks',
        'removeTasks'
     ]),
-    pageState() {
-      return this.pageNumber > 0 ? true : false
+
+  },
+
+  watch: {
+    currentPage: function(page){
+      this.getPageTaskBack(page)
     },
   },
 
   mounted () {
-    this.getPageTaskBack(this.pageNumber)
+    this.getPageTaskBack(this.currentPage)
   },
 
   methods: {
@@ -94,12 +92,6 @@ export default {
         this.addTaskBack(formCopy);
       }
     },
-
-    getPage(){
-      if(this.pageState){
-        this.getPageTaskBack(this.pageNumber)
-      }
-    }
 
   }
 

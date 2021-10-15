@@ -14,11 +14,15 @@ export const store = new Vuex.Store({
     tasks: [],
     token: null,
     user: null,
-    isUserLoggedIn: false
+    isUserLoggedIn: false,
+    infoPages: {}
   },
   getters: {
     getTasks: state => {
       return state.tasks
+    },
+    getInfoPages: state => {
+      return state.infoPages
     },
     completedTasks: state => {
         return state.tasks.filter(Task => Task.completed);
@@ -33,6 +37,9 @@ export const store = new Vuex.Store({
   mutations: {
     setTasks(state, task){
       state.tasks = task;
+    },
+    setInfoPages(state, infoPages){
+      state.infoPages = infoPages;
     },
     addTasks(state, task){
       state.tasks.push(task);
@@ -59,7 +66,10 @@ export const store = new Vuex.Store({
     // },
     async getPageTaskBack ({ commit }, page) {
       const response = await TaskService.getPage(page)
-      commit('setTasks', response.data)
+      const responseData = response.data;
+      const { docs, ...infoPages } = responseData;
+      commit('setTasks', docs)
+      commit('setInfoPages', infoPages)
     },
     async addTaskBack ({ commit }, task) {
       const response = await TaskService.add({

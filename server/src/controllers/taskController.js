@@ -24,8 +24,8 @@ module.exports = (Task) => {
                 collation: {locale: 'en',},
             };
             const query = Task.find()
-            const task = await Task.paginate(query,options)
-            statusManager(res, 200, task.docs);
+            let task = await Task.paginate(query,options)
+            statusManager(res, 200, task);
         } catch (error) {
             console.log(error)
             statusManager(res, 500, 'an error has occured trying to get the tasks');
