@@ -37,12 +37,12 @@ beforeEach(() => {
 describe('when register', () => {
 
   describe('if the email is already registered with an account', () => {
-    test('should return 400 ', async () => {
+    test('should return 422 ', async () => {
       findOne.mockResolvedValue(findOneResp);
       req = { body: { email:"test@gmail.com",password:"test" } };
       res = { type: type, status: status,send: send};
       await authRepo(User).register(req, res)
-      expect(res.status).toBeCalledWith(400)
+      expect(res.status).toBeCalledWith(422)
     })
   })
 

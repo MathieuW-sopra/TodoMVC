@@ -24,11 +24,11 @@ module.exports = (Task) => {
             sort: { title: 1 }
         };
         let query;
-        if(req.query.completed == undefined){
-            query = Task.find()
-        }
-        else{query = Task.find({completed: req.query.completed})}
         try {
+            if(req.query.completed == undefined){
+                query = Task.find()
+            }
+            else{query = Task.find({completed: req.query.completed})}
             let task = await Task.paginate(query,options)
             statusManager(res, 200, task);
         } catch (error) {

@@ -10,7 +10,7 @@ let res = { type: type, status: status,send: send };
 const find = jest.fn();
 const Task = makeTask;
 Task.find = find;
-const paginate = jest.fn().mockResolvedValue({docs:req.body})
+const paginate = jest.fn().mockResolvedValue(req.body)
 Task.paginate=paginate;
 
 beforeEach(() => {
