@@ -6,8 +6,8 @@ export default {
   get () {
     return Api().get('task/get')
   },
-  getPage (page) {
-    return Api().get('task/getPage', { params: { page }})
+  getPage (request) {
+    return Api().get('task/getPage', request)
   },
   add (task) {
     return Api().post('task/add', task)

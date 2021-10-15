@@ -8,5 +8,5 @@ module.exports = {
       jwtSecret: process.env.JWT_SECRET || 'secret',
       cryptoSalt: process.env.CRYPTO_SALT || 'f844b09ff50c',
    },
-   pageLength: process.env.PAGE_LENGTH || 5,
+   pageLength: process.env.PAGE_LENGTH || 10,
 }

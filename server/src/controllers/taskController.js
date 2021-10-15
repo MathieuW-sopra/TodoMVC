@@ -15,15 +15,20 @@ module.exports = (Task) => {
 
     async function getPage(req, res){
         if(req.query.page<1){
-            return statusManager(res, 400, 'page  number must have a number greater than 0');
+            return statusManager(res, 400, 'page  number must be greater than 0');
         }
+        const options = {
+            page: req.query.page,
+            limit: req.query.limit < config.pageLength ? req.query.limit : config.pageLength,
+            collation: {locale: 'en',},
+            sort: { title: 1 }
+        };
+        let query;
+        if(req.query.completed == undefined){
+            query = Task.find()
+        }
+        else{query = Task.find({completed: req.query.completed})}
         try {
-            const options = {
-                page: req.query.page,
-                limit: config.pageLength,
-                collation: {locale: 'en',},
-            };
-            const query = Task.find()
             let task = await Task.paginate(query,options)
             statusManager(res, 200, task);
         } catch (error) {

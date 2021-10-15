@@ -6,7 +6,6 @@ import createPersistedState from 'vuex-persistedstate'
 Vue.use(Vuex)
 
 export const store = new Vuex.Store({
-  strict: true,
   plugins: [
     createPersistedState()
   ],
@@ -33,6 +32,9 @@ export const store = new Vuex.Store({
     completedTasksCount: (state, getters) => {
       return getters.completedTasks.length
     },
+    getIsUserLoggedIn: state => {
+      return state.isUserLoggedIn
+    }
   },
   mutations: {
     setTasks(state, task){
@@ -64,12 +66,14 @@ export const store = new Vuex.Store({
     //   const response = await TaskService.get()
     //   commit('setTasks', response.data)
     // },
-    async getPageTaskBack ({ commit }, page) {
-      const response = await TaskService.getPage(page)
-      const responseData = response.data;
-      const { docs, ...infoPages } = responseData;
-      commit('setTasks', docs)
-      commit('setInfoPages', infoPages)
+    async getPageTaskBack ({ commit }, request) {
+      if(request){
+        const response = await TaskService.getPage(request)
+        const responseData = response.data;
+        const { docs, ...infoPages } = responseData;
+        commit('setTasks', docs)
+        commit('setInfoPages', infoPages)
+      }
     },
     async addTaskBack ({ commit }, task) {
       const response = await TaskService.add({
