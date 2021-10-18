@@ -2,8 +2,8 @@ const makeUser = require("../../../src/models/User")
 const authRepo = require('../../../src/controllers/authController')
 const crypto = require('crypto')
 const config = require('../../../src/config/config')
-const { findOneAndReplace } = require("../../../src/models/User")
 const salt = config.authentication.cryptoSalt
+const jwt = require('jsonwebtoken')
 
 let req = { body: { email:"test@gmail.com", password:"test"} };
 const type = jest.fn();
@@ -34,6 +34,13 @@ beforeEach(() => {
   res = { type: type, status: status,send: send};
 });
 
+function jwtSignUser (user) {
+  const ONE_WEEK = 60 * 60 * 24 * 7;
+  return jwt.sign(user, config.authentication.jwtSecret, {
+    expiresIn: ONE_WEEK
+  })
+}
+
 describe('when register', () => {
 
   describe('if the email is already registered with an account', () => {
@@ -56,7 +63,7 @@ describe('when register', () => {
     await authRepo(User).register(req, res)
     expect(res.send).toBeCalledWith({
       user: findOneResp,
-      token: authRepo(User).jwtSignUser(findOneResp)
+      token: jwtSignUser(findOneResp)
     });
   })
 
