@@ -2,6 +2,7 @@ const config = require('../config/config')
 const crypto = require('crypto')
 const salt = config.authentication.cryptoSalt
 const statusManager = require('../services/statusManager/')
+const jwt = require('jsonwebtoken')
 
 function jwtSignUser (user) {
   const ONE_WEEK = 60 * 60 * 24 * 7;
@@ -27,7 +28,7 @@ module.exports = (User) => {
 			req.body.password = hash;
 		try {
 			const user = await User.create(req.body);
-			const userJson = JSON.parse(JSON.stringify(user))
+			const userJson = JSON.parse(JSON.stringify(user));
 			statusManager(res, 200, {user: userJson, token: jwtSignUser(userJson)});
 		} catch (error) {
 			console.log(error)
@@ -48,7 +49,8 @@ module.exports = (User) => {
 			if (password !== user.password) {
 				return statusManager(res, 403, 'The login information was incorrect');
 			}
-			statusManager(res, 200, user);
+			const userJson = JSON.parse(JSON.stringify(user));
+			statusManager(res, 200, {user: userJson, token: jwtSignUser(userJson)});
 		} catch (error) {
 			console.log(error)
 			statusManager(res, 500);
