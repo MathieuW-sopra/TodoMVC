@@ -5,16 +5,15 @@ module.exports =  (res, status, content=undefined) => {
     case 200:
       res.send(content);
       break;
-    case 400:
+    case 500:
+      res.send({
+          error: "server error"
+      })
+      break;
+    default:
       res.send({
         error: content
       })
-      break;
-    case 500:
-      res.send({
-          error: content
-      })
-      break;
   }
 
 }

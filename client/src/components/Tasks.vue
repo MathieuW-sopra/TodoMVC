@@ -19,7 +19,7 @@
             </b-form-group>
           </b-form>
           <b-row>
-            <b-col sm="3">
+            <b-col sm="5">
               <b-form-group>
                 <b-form-checkbox v-model="showCompleted" value=true unchecked-value=false >
                   Completed
@@ -32,8 +32,10 @@
             <b-col sm="3">
               number of element per page:
             </b-col>
-            <b-col sm="1">
-              <b-form-input v-model="elemLimit"></b-form-input>
+            <b-col sm="3">
+              <b-form-input id="validationPage" class="form-control" v-model="elemLimit"></b-form-input>
+              <label class="form-label"></label>
+              <div class="invalid-feedback">Please choose a correct number</div>
             </b-col>
           </b-row>
           <br>
@@ -92,27 +94,22 @@ export default {
 
   watch: {
     currentPage: function(){
-      const request=this.getRequest()
-      this.getPageTaskBack(request)
+      this.getRequest()
     },
     showCompleted: function(){
-      const request=this.getRequest()
-      this.getPageTaskBack(request)
+      this.getRequest()
     },
     showUncompleted: function(){
-      const request=this.getRequest()
-      this.getPageTaskBack(request)
+      this.getRequest()
     },
     elemLimit: function(){
-      const request=this.getRequest()
-      this.getPageTaskBack(request)
+      this.getRequest()
     }
 
   },
 
   mounted () {
-    const request=this.getRequest()
-    this.getPageTaskBack(request)
+    this.getRequest()
   },
 
   methods: {
@@ -130,16 +127,20 @@ export default {
     },
 
     getRequest() {
-      const params = {page : this.currentPage}
+      const params = {page: this.currentPage, limit: undefined, completed: undefined}
       params.limit= this.elemLimit
       const request = {
         params: params
       };
+      if(this.elemLimit<1 || isNaN(this.elemLimit)){
+        document.getElementById('validationPage').classList.remove('is-valid');
+        document.getElementById('validationPage').classList.add('is-invalid');
+        return
+      }
       if(this.showCompleted === 'false' && this.showUncompleted === "false"){
         return
       }
       else if(this.showCompleted === 'true' && this.showUncompleted === "true"){
-        return request
       }
       else{
         if(this.showCompleted === 'false'){
@@ -148,8 +149,11 @@ export default {
         if(this.showUncompleted === "false"){
           params.completed = true;
         }
-        return request
       }
+      document.getElementById('validationPage').classList.remove('is-invalid');
+      document.getElementById('validationPage').classList.add('is-valid');
+      this.getPageTaskBack(request)
+      return
     }
 
   }

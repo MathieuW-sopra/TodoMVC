@@ -1,9 +1,10 @@
 const config = require('../config/config')
-const statusManager = require('../services/statusManager/task')
+const statusManager = require('../services/statusManager/')
 
 module.exports = (Task) => {
 
     async function get(req, res){
+        
         try {
             const query = Task.find()
             const task = await query;
@@ -14,6 +15,7 @@ module.exports = (Task) => {
     }
 
     async function getPage(req, res){
+        
         if(req.query.page<1){
             return statusManager(res, 400, 'page  number must be greater than 0');
         }
@@ -38,6 +40,7 @@ module.exports = (Task) => {
     }
 
     async function add(req, res){
+        
         if (!req.body.title) {
             return statusManager(res, 400, 'task must have a title');
           }
@@ -50,6 +53,7 @@ module.exports = (Task) => {
     }
 
     async function replace(req, res){
+        
         if (!req.body.title && (req.body.completed === undefined)) {
             return statusManager(res, 400, 'it must have at least one property to modify');
           }
@@ -62,6 +66,7 @@ module.exports = (Task) => {
     }
 
     async function remove(req, res){
+        
         if (!req.body.id) {
             return statusManager(res, 400, 'it must have an id');
           }
