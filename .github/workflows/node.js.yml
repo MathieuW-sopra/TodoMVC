@@ -35,5 +35,8 @@ jobs:
     - name: Install server dependencies
       run: npm ci
 
+    - name: Run ESLint
+      run: eslint . --ext .js,.jsx,.ts,.tsx
+
     - name: run server test
       run: npm test

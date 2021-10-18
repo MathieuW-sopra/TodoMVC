@@ -1,10 +1,8 @@
-const express = require('express');
+const express = require("express");
 const morgan = require("morgan");
 const cors = require("cors");
-const helmet = require('helmet');
+const helmet = require("helmet");
 const nocache = require("nocache");
-
-
 
 module.exports = () => {
   return new Promise(resolve => {
@@ -17,4 +15,4 @@ module.exports = () => {
     app.use(cors());
     resolve(app);
   });
-}
+};

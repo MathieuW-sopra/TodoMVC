@@ -1,9 +1,9 @@
 const makeUser = require("../../../src/models/User")
-const authRepo = require('../../../src/controllers/authController')
-const crypto = require('crypto')
-const config = require('../../../src/config/config')
+const authRepo = require("../../../src/controllers/authController")
+const crypto = require("crypto")
+const config = require("../../../src/config/config")
 const salt = config.authentication.cryptoSalt
-const jwt = require('jsonwebtoken')
+const jwt = require("jsonwebtoken")
 
 let req = { body: { email:"test@gmail.com", password:"test"} };
 const type = jest.fn();
@@ -41,10 +41,10 @@ function jwtSignUser (user) {
   })
 }
 
-describe('when register', () => {
+describe("when register", () => {
 
-  describe('if the email is already registered with an account', () => {
-    test('should return 422 ', async () => {
+  describe("if the email is already registered with an account", () => {
+    test("should return 422 ", async () => {
       findOne.mockResolvedValue(findOneResp);
       req = { body: { email:"test@gmail.com",password:"test" } };
       res = { type: type, status: status,send: send};
@@ -53,12 +53,12 @@ describe('when register', () => {
     })
   })
 
-  test('should create the corresponding account', async () => {
+  test("should create the corresponding account", async () => {
     await authRepo(User).register(req, res)
     expect(findOne.mock.calls.length).toBe(1);
   })
 
-  test('should respond the user with corresponding token', async () => {
+  test("should respond the user with corresponding token", async () => {
     create.mockResolvedValue(req.body);
     await authRepo(User).register(req, res)
     expect(res.send).toBeCalledWith({
@@ -67,7 +67,7 @@ describe('when register', () => {
     });
   })
 
-  test('should respond with a 200 status code', async () => {
+  test("should respond with a 200 status code", async () => {
     findOne.mockResolvedValue(undefined);
     await authRepo(User).register(req, res)
     expect(res.status).toBeCalledWith(200)
@@ -75,7 +75,7 @@ describe('when register', () => {
 
   test("should specify json in the content type header", async () => {
     await authRepo(User).register(req, res)
-    expect(res.type).toBeCalledWith('application/json')
+    expect(res.type).toBeCalledWith("application/json")
   })
 
   describe("when an error occur", () => {

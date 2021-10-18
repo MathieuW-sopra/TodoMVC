@@ -4,7 +4,7 @@
   "description": "",
   "main": "index.js",
   "scripts": {
-    "start": "set DEBUG=app & nodemon src/app.js",
+    "start": "set DEBUG=app & nodemon src/app.js --exec  \"npm run lint && node\"",
     "debug": "set DEBUG=* & nodemon src/app.js",
     "lint": "eslint src/**/*.js",
     "test": "jest --coverage"

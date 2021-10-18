@@ -1,14 +1,12 @@
-const makeApp = require('./services/express/bootstrap.js')
-const makeDB = require('./services/mongoose/bootstrap.js')
+const makeApp = require("./services/express/bootstrap.js");
+const makeDB = require("./services/mongoose/bootstrap.js");
 const routes = require("./routers/router");
-const index = require('./services/express/index.js')
-require('./services/passport/bootstrap.js')
+const index = require("./services/express/index.js");
+require("./services/passport/bootstrap.js");
 
 async function appAndRouter(){
-  return new Promise(async resolve => {
-    app = await makeApp();
-    await routes(app);
-    resolve(app);
+  return new Promise(resolve => {
+    makeApp().then(app => routes(app).then(app => resolve(app)));
   });
 }
 

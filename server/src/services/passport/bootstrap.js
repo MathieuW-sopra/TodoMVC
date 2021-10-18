@@ -1,11 +1,11 @@
-const passport = require('passport')
-const User = require('../../models/User')
-const { ObjectId } = require('mongodb');
+const passport = require("passport");
+const User = require("../../models/User");
+const { ObjectId } = require("mongodb");
 
-const JwtStrategy = require('passport-jwt').Strategy
-const ExtractJwt = require('passport-jwt').ExtractJwt
+const JwtStrategy = require("passport-jwt").Strategy;
+const ExtractJwt = require("passport-jwt").ExtractJwt;
 
-const config = require('../../config/config')
+const config = require("../../config/config");
 
 passport.use(
   new JwtStrategy({
@@ -13,15 +13,15 @@ passport.use(
     secretOrKey: config.authentication.jwtSecret
   }, async function (jwtPayload, done) {
     try {
-      const user = await User.findById(ObjectId(jwtPayload._id))
+      const user = await User.findById(ObjectId(jwtPayload._id));
       if (!user) {
-        return done(new Error(), false)
+        return done(new Error(), false);
       }
-      return done(null, user)
+      return done(null, user);
     } catch (err) {
-      return done(new Error(), false)
+      return done(new Error(), false);
     }
   })
-)
+);
 
-module.exports = null
+module.exports = null;

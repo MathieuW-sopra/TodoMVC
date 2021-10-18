@@ -1,5 +1,5 @@
 const makeTask = require("../../../src/models/Task")
-const taskRepo = require('../../../src/controllers/taskController')
+const taskRepo = require("../../../src/controllers/taskController")
 
 let req = { body: { title:"testTitle",completed:true },query:{page:1} };
 const type = jest.fn();
@@ -21,26 +21,26 @@ beforeEach(() => {
   res = { type: type, status: status,send: send};
 });
 
-describe('when getting all tasks', () => {
+describe("when getting all tasks", () => {
 
-  test('should get all tasks in the database', async () => {
+  test("should get all tasks in the database", async () => {
     await taskRepo(Task).getPage(req, res)
     expect(Task.find.mock.calls.length).toBe(1);
   })
 
-  test('should respond all tasks in the database', async () => {
+  test("should respond all tasks in the database", async () => {
     await taskRepo(Task).getPage(req, res)
     expect(res.send).toBeCalledWith(req.body);
   })
 
-  test('should respond with a 200 status code', async () => {
+  test("should respond with a 200 status code", async () => {
     await taskRepo(Task).getPage(req, res)
     expect(res.status).toBeCalledWith(200)
   })
 
   test("should specify json in the content type header", async () => {
     await taskRepo(Task).getPage(req, res)
-    expect(res.type).toBeCalledWith('application/json')
+    expect(res.type).toBeCalledWith("application/json")
   })
 
   describe("when the page number is not superior to 1", () => {

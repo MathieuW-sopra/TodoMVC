@@ -19,7 +19,7 @@
             </b-form-group>
           </b-form>
           <b-row>
-            <b-col sm="5">
+            <b-col sm="4">
               <b-form-group>
                 <b-form-checkbox v-model="showCompleted" value=true unchecked-value=false >
                   Completed
@@ -36,6 +36,9 @@
               <b-form-input id="validationPage" class="form-control" v-model="elemLimit"></b-form-input>
               <label class="form-label"></label>
               <div class="invalid-feedback">Please choose a correct number</div>
+            </b-col>
+            <b-col sm="2">
+              <div style=hidden id=showLimit> limit is {{backLimit}}</div>
             </b-col>
           </b-row>
           <br>
@@ -62,7 +65,6 @@
 </template>
 
 <script>
-/* eslint-disable */
 import { store } from '@/store/store.js'
 import { mapGetters } from 'vuex';
 import { mapActions } from 'vuex'
@@ -82,6 +84,7 @@ export default {
       showCompleted:true,
       showUncompleted:true,
       elemLimit:5,
+      backLimit:5,
     }
   },
   computed:{
@@ -140,8 +143,8 @@ export default {
       if(this.showCompleted === 'false' && this.showUncompleted === "false"){
         return
       }
-      else if(this.showCompleted === 'true' && this.showUncompleted === "true"){
-      }
+      // else if(this.showCompleted === 'true' && this.showUncompleted === "true"){
+      // }
       else{
         if(this.showCompleted === 'false'){
           params.completed = false;
@@ -152,7 +155,17 @@ export default {
       }
       document.getElementById('validationPage').classList.remove('is-invalid');
       document.getElementById('validationPage').classList.add('is-valid');
-      this.getPageTaskBack(request)
+      this.getPageTaskBack(request).then((backLimit) => {
+        this.backLimit=backLimit;
+        if(this.backLimit != this.elemLimit){
+          console.log("this.elemLimit :"+this.elemLimit)
+          console.log("this.backLimit :"+this.backLimit)
+          document.getElementById('showLimit').style.visibility = "visible";
+        }
+        else{
+          document.getElementById('showLimit').style.visibility = "hidden";
+        }
+      });
       return
     }
 

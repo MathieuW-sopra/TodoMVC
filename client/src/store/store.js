@@ -73,6 +73,9 @@ export const store = new Vuex.Store({
         const { docs, ...infoPages } = responseData;
         commit('setTasks', docs)
         commit('setInfoPages', infoPages)
+        return new Promise(resolve => {
+            resolve(responseData.limit);
+        });
       }
     },
     async addTaskBack ({ commit }, task) {

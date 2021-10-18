@@ -1,9 +1,9 @@
 const makeUser = require("../../../src/models/User")
-const authRepo = require('../../../src/controllers/authController')
-const crypto = require('crypto')
-const config = require('../../../src/config/config')
+const authRepo = require("../../../src/controllers/authController")
+const crypto = require("crypto")
+const config = require("../../../src/config/config")
 const salt = config.authentication.cryptoSalt
-const jwt = require('jsonwebtoken')
+const jwt = require("jsonwebtoken")
 
 let req = { body: { email:"test@gmail.com", password:"test"} };
 const type = jest.fn();
@@ -39,14 +39,14 @@ function jwtSignUser (user) {
   })
 }
 
-describe('when logging', () => {
+describe("when logging", () => {
 
-  test('should find the corresponding account', async () => {
+  test("should find the corresponding account", async () => {
     await authRepo(User).login(req, res)
     expect(findOne.mock.calls.length).toBe(1);
   })
 
-  test('should respond the user with corresponding token', async () => {
+  test("should respond the user with corresponding token", async () => {
     await authRepo(User).login(req, res)
     expect(res.send).toBeCalledWith({
       user: findOneResp,
@@ -54,14 +54,14 @@ describe('when logging', () => {
     });
   })
 
-  test('should respond with a 200 status code', async () => {
+  test("should respond with a 200 status code", async () => {
     await authRepo(User).login(req, res)
     expect(res.status).toBeCalledWith(200)
   })
 
   test("should specify json in the content type header", async () => {
     await authRepo(User).login(req, res)
-    expect(res.type).toBeCalledWith('application/json')
+    expect(res.type).toBeCalledWith("application/json")
   })
 
   describe("when an error occur", () => {

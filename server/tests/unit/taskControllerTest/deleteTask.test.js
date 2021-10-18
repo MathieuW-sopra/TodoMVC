@@ -1,5 +1,5 @@
 const makeTask = require("../../../src/models/Task")
-const taskRepo = require('../../../src/controllers/taskController')
+const taskRepo = require("../../../src/controllers/taskController")
 
 const findByIdAndRemove = jest.fn();
 const Task = makeTask
@@ -20,28 +20,28 @@ beforeEach(() => {
   res = { type: type, status: status,send: send};
 });
 
-describe('when deleting one task', () => {
+describe("when deleting one task", () => {
 
-  test('should remove the task in the database', async () => {
+  test("should remove the task in the database", async () => {
     await taskRepo(Task).remove(req, res)
     expect(findByIdAndRemove.mock.calls.length).toBe(1);
   })
 
-  test('should respond the deleted object', async () => {
+  test("should respond the deleted object", async () => {
     const bodyData={title:"testTitle",completed:true};
     findByIdAndRemove.mockResolvedValue(bodyData)
     await taskRepo(Task).remove(req, res)
     expect(res.send).toBeCalledWith(bodyData);
   })
 
-  test('should respond with a 200 status code', async () => {
+  test("should respond with a 200 status code", async () => {
     await taskRepo(Task).remove(req, res)
-    expect(res.type).toBeCalledWith('application/json')
+    expect(res.type).toBeCalledWith("application/json")
   })
 
   test("should specify json in the content type header", async () => {
     await taskRepo(Task).remove(req, res)
-    expect(res.type).toBeCalledWith('application/json')
+    expect(res.type).toBeCalledWith("application/json")
   })
 
   describe("when the id is missing", () => {

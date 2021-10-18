@@ -1,16 +1,17 @@
-const mongoose = require('mongoose');
-const config = require('../../config/config')
+const mongoose = require("mongoose");
+const config = require("../../config/config");
 
 module.exports =  () => {
 
-  return new Promise(async resolve => {
+  return new Promise(resolve => {
     try {
-      await mongoose.connect(config.db.url);
-      const db = mongoose.connection;
-      resolve(db); 
+      mongoose.connect(config.db.url).then(()=>{
+        const db = mongoose.connection;
+        resolve(db); 
+      });
 
     } catch (error) {
-      handleError(error);
+      console.log(error);
     }
   });
-}
+};
