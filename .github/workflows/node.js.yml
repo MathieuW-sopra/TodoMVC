@@ -27,7 +27,5 @@ jobs:
         node-version: ${{ matrix.node-version }}
         cache: 'npm'
       working-directory: ./server
-    # - run: |
-    #     cd TodoMVC/server
-    #     npm ci
-    # - run: npm test
+    - run: npm ci
+    - run: npm test
