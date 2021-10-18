@@ -35,7 +35,7 @@ describe('when getting all tasks', () => {
 
   test('should respond with a 200 status code', async () => {
     await taskRepo(Task).getPage(req, res)
-    expect(res.status).toBeCalledWith(300)
+    expect(res.status).toBeCalledWith(200)
   })
 
   test("should specify json in the content type header", async () => {
